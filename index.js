@@ -46,8 +46,8 @@ const loggerMiddleware = (request, response, next) => {
         console.log("Come right in")
         next()
     }else{
-        console.log("You are not in this class Thomas Muller")
-        res.status(404).send("Get out!")
+        console.log("You are not in this class Thomas Muller");
+        response.status(500).send("Hey")
     }
 };
 
