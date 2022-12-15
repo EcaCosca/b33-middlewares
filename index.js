@@ -42,10 +42,13 @@ app.post('/body', (req, res, next)=>{
 const loggerMiddleware = (request, response, next) => {
     console.log('Console logging from the middleware!'); // Logs the string and goes to the next 							  function in the pipeline
     console.log(request.body.name)
-    if(request.body){
+    if(request.body.name === "Eca"){
         console.log("Come right in")
         next()
-    }else{console.log("You are not in this class Thomas Muller")}
+    }else{
+        console.log("You are not in this class Thomas Muller")
+        res.status(404).send("Get out!")
+    }
 };
 
 const myHandlerFunction = (request, response) => response.send(request.method); // Ends the req/res cycle
