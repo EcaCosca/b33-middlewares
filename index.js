@@ -8,14 +8,14 @@ app.use(express.json())
 
 // FIRST EXAMPLE USING NEXT
 
-app.get('/', (req, res, next)=>{
-    next()
-    res.send("Hello there!")
-})
+// app.get('/', (req, res, next)=>{
+//     next()
+//     res.send("Hello there!")
+// })
 
-app.get('/', (req, res, next)=>{
-    console.log("Ok bye now!")
-})
+// app.get('/', (req, res, next)=>{
+//     console.log("Ok bye now!")
+// })
 
 
 // EXAMPLE NUMERO DOS 
@@ -31,10 +31,35 @@ app.get('/', (req, res, next)=>{
         // };
         
         // app.use('/path', getOnlyMiddleware);
-        
+
+// THIRD EXAMPLE
 app.post('/body', (req, res, next)=>{
     res.send(req.body)
 })
+
+// FORTH EXAMPLE: Application-level middlewares / app[METHOD]()
+
+const loggerMiddleware = (request, response, next) => {
+    console.log('Console logging from the middleware!'); // Logs the string and goes to the next 							  function in the pipeline
+    console.log(request.body.name)
+    if(request.body){
+        console.log("Come right in")
+        next()
+    }else{console.log("You are not in this class Thomas Muller")}
+};
+
+const myHandlerFunction = (request, response) => response.send(request.method); // Ends the req/res cycle
+
+app.get('/', loggerMiddleware, myHandlerFunction);     // The client will see 'get' in the browser
+app.post('/', loggerMiddleware, myHandlerFunction);    // The client will see 'post' in the browser
+app.put('/', loggerMiddleware, myHandlerFunction);     // The client will see 'put' in the browser
+app.delete('/', loggerMiddleware, myHandlerFunction);  // The client will see 'delete' in the browser
+
+
+app.use((error, req, res, next) => {
+    console.error(error.stack)
+    console.log("ERROR")
+    res.status(500).send('Something broke!')
+});
         
-        
-        app.listen(4500, ()=>{console.log("Connected")})
+app.listen(4500, ()=>{console.log("Connected")})
